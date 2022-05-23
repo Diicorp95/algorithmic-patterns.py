@@ -1,6 +1,7 @@
 import png
 
-def upscale(image, size = 2, stored_ints = False, greyscale = True):
+
+def upscale(image, size=2, stored_ints=False, greyscale=True):
     y = []
     if stored_ints:
         if greyscale:
@@ -14,7 +15,7 @@ def upscale(image, size = 2, stored_ints = False, greyscale = True):
         else:
             x = image
             for i, j in enumerate(x):
-                x[i] = [j[n:n + 3] for n in range(0, len(j), 3)] # Group
+                x[i] = [j[n : n + 3] for n in range(0, len(j), 3)]  # Group
             pre_y = []
             for row in x:
                 a = []
@@ -41,17 +42,18 @@ def upscale(image, size = 2, stored_ints = False, greyscale = True):
                 y.append(a)
     return y
 
+
 def plot(image, **kwargs):
-    '''
-        **kwargs { stored_ints = False, bitdepth = 4, greyscale = True, width = None, height = None, filename = 'png_test.png' }
-    '''
+    """
+    **kwargs { stored_ints = False, bitdepth = 4, greyscale = True, width = None, height = None, filename = 'png_test.png' }
+    """
     # - kwargs begin -
-    stored_ints = kwargs.get('stored_ints', False)
-    bitdepth = kwargs.get('bitdepth', 4)
-    greyscale = kwargs.get('greyscale', True)
-    width = kwargs.get('width', None)
-    height = kwargs.get('height', None)
-    filename = kwargs.get('filename', 'endpix_plot.png')
+    stored_ints = kwargs.get("stored_ints", False)
+    bitdepth = kwargs.get("bitdepth", 4)
+    greyscale = kwargs.get("greyscale", True)
+    width = kwargs.get("width", None)
+    height = kwargs.get("height", None)
+    filename = kwargs.get("filename", "endpix_plot.png")
     # - kwargs end -
     # ~ print('Plotting...')
     if not stored_ints:
@@ -60,7 +62,7 @@ def plot(image, **kwargs):
         width = len(image[0])
     if height is None:
         height = len(image)
-    w = png.Writer(width, height, greyscale = greyscale, bitdepth = bitdepth)
-    f = open(filename, 'wb')
+    w = png.Writer(width, height, greyscale=greyscale, bitdepth=bitdepth)
+    f = open(filename, "wb")
     w.write(f, image)
     f.close()

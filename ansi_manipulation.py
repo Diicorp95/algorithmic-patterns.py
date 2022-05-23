@@ -3,7 +3,7 @@
 def horizontal_reflection(image):
     result = ''
     for line in image.split('\n'):
-	result += line[::-1] + '\n'
+    result += line[::-1] + '\n'
     return result
 
 def vertical_reflection(image):
@@ -13,11 +13,11 @@ def vertical_reflection(image):
 def add_horizontal_reflection(image, to_right_side = True):
     result = ''
     for line in image.split('\n'):
-	if to_right_side:
-	    result += line + line[::-1]
-	else:
-	    result += line[::-1] + line
-	result += '\n'
+    if to_right_side:
+        result += line + line[::-1]
+    else:
+        result += line[::-1] + line
+    result += '\n'
     return result
 
 def add_vertical_reflection(image, to_bottom = True):
