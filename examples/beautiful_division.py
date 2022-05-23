@@ -12,11 +12,11 @@ for i in range(height):
         color = 0
         y = i / j
         if y in h1:
-            color = 3
+            color = 1
         else:
             h1.append(y)
         _.append(color)
     s.append(_)
 
 s = endpix.upscale(s, 18, True)
-endpix.plot(s, stored_ints = True, bitdepth = 2)
+endpix.plot(s, stored_ints = True, bitdepth = 1)
