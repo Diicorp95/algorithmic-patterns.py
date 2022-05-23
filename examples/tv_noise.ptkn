@@ -1,0 +1,12 @@
+--- BEGIN PATTERNKNOT FILE ---
+#  "TV Noise": PatternKnot file
+# -----------------------------------------------------------------------------
+#  Coded by Larry "Diicorp95" Holst. UNLICENSE license. Read LICENSE file for
+#  more information.
+
+width: 512
+height: 512
+bitdepth: 2
+
+= floor(~$ % (($ ** (1/4)) + 1))
+--- END PATTERNKNOT FILE ---

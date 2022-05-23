@@ -1,0 +1,12 @@
+--- BEGIN PATTERNKNOT FILE ---
+#  "Checkerboard": PatternKnot file
+# -----------------------------------------------------------------------------
+#  Coded by Larry "Diicorp95" Holst. UNLICENSE license. Read LICENSE file for
+#  more information.
+
+width: 8
+height: 8
+upscale x: 48
+
+= ((1 & ($ % 2)) * 9) + 4
+--- END PATTERNKNOT FILE ---

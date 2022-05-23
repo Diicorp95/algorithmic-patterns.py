@@ -1,0 +1,12 @@
+--- BEGIN PATTERNKNOT FILE ---
+#  "Gothic Sierpinski": PatternKnot file
+# -----------------------------------------------------------------------------
+#  Coded by Larry "Diicorp95" Holst. UNLICENSE license. Read LICENSE file for
+#  more information.
+
+width: 256
+height: 256
+upscale x: 2
+
+= $ // 2 ** ($ % 8)
+--- END PATTERNKNOT FILE ---

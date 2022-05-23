@@ -1,0 +1,12 @@
+--- BEGIN PATTERNKNOT FILE ---
+#  "45 degrees": PatternKnot file
+# -----------------------------------------------------------------------------
+#  Coded by Larry "Diicorp95" Holst. UNLICENSE license. Read LICENSE file for
+#  more information.
+
+width: 24
+height: 24
+upscale x: 16
+
+= 13 if $ % 3 == 1 else 4
+--- END PATTERNKNOT FILE ---

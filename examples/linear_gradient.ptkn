@@ -1,0 +1,11 @@
+--- BEGIN PATTERNKNOT FILE ---
+#  "Linear Gradient": PatternKnot file
+# -----------------------------------------------------------------------------
+#  Coded by Larry "Diicorp95" Holst. UNLICENSE license. Read LICENSE file for
+#  more information.
+
+width: 512
+height: 512
+
+= $ // 2
+--- END PATTERNKNOT FILE ---
