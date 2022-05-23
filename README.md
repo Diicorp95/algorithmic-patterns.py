@@ -1,5 +1,5 @@
 # algorithmic-patterns.py
-**Active development stage**
+🛠️ **Active development stage**
 
 Libraries for plotting the images and the algorithms
 
