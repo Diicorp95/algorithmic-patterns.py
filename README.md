@@ -1,4 +1,7 @@
 # algorithmic-patterns.py
+
+[![CodeFactor](https://www.codefactor.io/repository/github/diicorp95/algorithmic-patterns.py/badge)](https://www.codefactor.io/repository/github/diicorp95/algorithmic-patterns.py/issues)
+
 🛠️ **Active development stage**
 
 Libraries for plotting the images and the algorithms
