@@ -1,8 +1,21 @@
+#!/usr/bin/python3
+
+#  endpix.py
+#  ASCII image processing and output script. A part of the repository
+#  < algorithmic_patterns.py >.
+# -----------------------------------------------------------------------------
+#  Coded by Larry "Diicorp95" Holst. UNLICENSE license. Read LICENSE file for
+#  more information.
+
 import png
 
 
-def upscale(image, size=2, stored_ints=False, greyscale=True):
-    y = []
+def upscale(image, **kwargs):
+    greyscale = kwargs.get("greyscale", True)
+    size = kwargs.get("size", 2)
+    stored_ints = kwargs.get("stored_ints", False)
+
+    res = []
     if stored_ints:
         if greyscale:
             for j in image:
@@ -11,51 +24,49 @@ def upscale(image, size=2, stored_ints=False, greyscale=True):
                     for l in range(size):
                         a.append(k)
                 for l in range(size):
-                    y.append(a)
+                    res.append(a)
         else:
             x = image
+
+            # Group
             for i, j in enumerate(x):
-                x[i] = [j[n : n + 3] for n in range(0, len(j), 3)]  # Group
-            pre_y = []
+                x[i] = [j[n : n + 3] for n in range(0, len(j), 3)]
+            pre_res = []
             for row in x:
-                a = []
+                line = []
                 for pixel in row:
                     for l in range(size):
-                        a.append(pixel)
+                        line.append(pixel)
                 for l in range(size):
-                    pre_y.append(a)
+                    pre_res.append(line)
+
             # Ungroup
-            y = []
-            for row in pre_y:
-                rown = []
+            res = []
+            for row in pre_res:
+                line = []
                 for pixel in row:
                     for byte in pixel:
-                        rown.append(byte)
-                y.append(rown)
+                        line.append(byte)
+                res.append(line)
     else:
         for j in image:
-            a = []
+            line = []
             for k in j:
                 for l in range(size):
-                    a += k
+                    line += k
             for l in range(size):
-                y.append(a)
-    return y
+                res.append(a)
+    return res
 
 
 def plot(image, **kwargs):
-    """
-    **kwargs { stored_ints = False, bitdepth = 4, greyscale = True, width = None, height = None, filename = 'png_test.png' }
-    """
-    # - kwargs begin -
     stored_ints = kwargs.get("stored_ints", False)
     bitdepth = kwargs.get("bitdepth", 4)
     greyscale = kwargs.get("greyscale", True)
     width = kwargs.get("width", None)
     height = kwargs.get("height", None)
     filename = kwargs.get("filename", "endpix_plot.png")
-    # - kwargs end -
-    # ~ print('Plotting...')
+
     if not stored_ints:
         image = [[int(c, 16) for c in row] for row in image]
     if width is None:

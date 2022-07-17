@@ -1,4 +1,11 @@
-# ANSI manipulations functions
+#!/usr/bin/python3
+
+#  ansi_manipulation.py
+#  ANSI manipulations functions. A part of the repository
+#  < algorithmic_patterns.py >.
+# -----------------------------------------------------------------------------
+#  Coded by Larry "Diicorp95" Holst. UNLICENSE license. Read LICENSE file for
+#  more information.
 
 
 def horizontal_reflection(image):

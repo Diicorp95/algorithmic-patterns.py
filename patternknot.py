@@ -9,6 +9,39 @@
 
 import os
 import math
+import endpix
+
+
+CONSOLE_HELP = """\
+PatternKnot is a parser and evaluator for *.ptkn files. A part of the
+repository < algorithmic_patterns.py >.
+
+Copyleft (c) Larry "Diicorp95" Holst. Licensed under UNLICENSE license.
+
+Usage: %s < filename > [ output file (PNG) ]
+
+Arguments:
+    filename ....................... The path to a PatternKnot file
+    output file (PNG) .............. The path to a PNG file
+                                     (optional)
+"""
+
+def __parse_arguments():
+    parser = argparse.ArgumentParser(prog='PatternKnot', conflict_handler='resolve')
+    parser.add_argument('-f', '--foo', help='old foo help')
+    parser.add_argument('--foo', help='new foo help')
+    parser.print_help()
+
+    if x:
+        print('x')
+    else:
+        print(CONSOLE_HELP)
+
+
+def __display_help():
+    text = CONSOLE_HELP % os.path.basename(sys.argv[0])
+    print(text)
+    raise SystemExit
 
 
 def decode_and_run(string):
@@ -16,6 +49,7 @@ def decode_and_run(string):
     # string: str
     #         a PatternKnot expression
     # return: str
+
     evaluated = []
     ops = {
         "$": "x",
@@ -42,6 +76,7 @@ def decode_and_run(string):
     ]
     ints = [str(i) for i in range(10)]
     keywords = ["if", "else", "int", "ceil", "floor"]
+
     # 2 quick tests:
     ts = string.replace(" ", "")
     found_keyword = False
@@ -57,6 +92,7 @@ def decode_and_run(string):
             and not found_keyword
         ):
             raise SyntaxError
+
     # Flags
     flagc = 2 + len(keywords)
     """
@@ -71,6 +107,7 @@ def decode_and_run(string):
         from #3 to #7           A safe way of adding keywords for eval call.
     """
     flagv = [0] * flagc
+
     # Main loop
     cmd = cmdquery = ""
     length = len(string)
@@ -137,8 +174,8 @@ def decode_and_run(string):
 
         if flagv[0] == 1:
             if j == "$":
-                # cmd = '(~$)'
-                cmd = "(255 ^ x)"
+                # Solution 1: cmd = '(~$)'
+                cmd = "(255 ^ x)"  # Solution 2
             else:
                 cmd = cmdquery + cmd
                 cmdquery = ""
@@ -151,10 +188,11 @@ def decode_and_run(string):
                 continue
         evaluated.append(cmd)
         cmd = ""
-    # ~ evaluated = ' '.join(evaluated)
-    evaluated = "".join(evaluated)
+    # Solution 1: evaluated = ' '.join(evaluated)
+    evaluated = "".join(evaluated)  # Solution 2
     print(evaluated)
-    return evaluated if evaluated else None
+    if evaluated:
+        return evaluated
 
 
 def __param_proc(line, which):
@@ -162,25 +200,26 @@ def __param_proc(line, which):
     # string: str
     #         a PatternKnot expression
     # return: None / int / bool
+
     value = line.replace(" ", "_").replace("_", "").replace("or", "our")
     if which == 0:
-        k = "width"
+        key = "width"
     elif which == 1:
-        k = "height"
+        key = "height"
     elif which == 2:
-        k = "upscalex"
+        key = "upscalex"
     elif which == 3:
-        k = "bitdepth"
+        key = "bitdepth"
     elif which == 4:
-        k = "colourful"
-    if not value[0 : len(k) + 1].lower() == k + ":":
+        key = "colourful"
+    if not value[0 : len(key) + 1].lower() == key + ":":
         if which >= 2:  # Optional parameters
             return -1
         raise SyntaxError
     if which == 4:
         return True
     try:
-        value = int(value[len(k) + 1 :][0:4])
+        value = int(value[len(key) + 1 :][0:4])
     except:
         raise SyntaxError
     if which < 2 and value >= 2048:
@@ -197,24 +236,32 @@ def parse(filepath):
     # parse(filepath)
     # filepath: a string object
     #           a path to a PatternKnot file
+
     real_fn = os.path.abspath(filepath)
     content = open(real_fn, "r").readlines()
     fsize = os.path.getsize(real_fn)
+
     if fsize <= 0:
         raise IOError or SyntaxError
+
     print("File size:", fsize, "B")
     to_test = content
     content = []
+
     for i, j in enumerate(to_test):
+        # Remove the comments
         comment = j.find("#")
         if comment > -1:
             j = j[:comment]
+
         re_line = j.strip().replace("\n", "").replace("\r", "")
         if re_line:  # ~ and re_line[0] != "#"
             content.append(re_line)
+
     magic_beginning = "--- BEGIN PATTERNKNOT FILE ---"
     magic_end = "--- END PATTERNKNOT FILE ---"
     verified = content[0] == magic_beginning and content[-1] == magic_end
+
     if verified:
         content = content[1:-1]
     else:
@@ -239,7 +286,6 @@ def parse(filepath):
         colourful = False
     else:
         next_index += 1
-    # ~ print("\n<{}>\n".format('\n'.join(content)), len(content), next_index)
     first = content[next_index]
     if first.replace(" ", "")[0] == "=":
         first_equality = first.find("=")
@@ -249,9 +295,11 @@ def parse(filepath):
         line = first[first_equality + 1 :].strip()
     else:
         raise SyntaxError(first + " " + str(next_index))
-    # ~ print(line, decode_and_run(line))
     evaluated = decode_and_run(line.lower())
-    return [lambda x: int(eval(evaluated)), width, height, upscale, bitdepth, colourful]
+
+    res = [lambda x: int(eval(evaluated)), width, height, upscale, bitdepth,
+        colourful]
+    return res
 
 
 if __name__ == "__main__":
@@ -260,11 +308,11 @@ if __name__ == "__main__":
     if len(sys.argv) > 1:
         fn = sys.argv[1]
     else:
-        display_help()
+        __display_help()
     if len(sys.argv) > 2:
         output_file = sys.argv[2]
     else:
-        output_file = "patternknot_render.png"
+        output_file = "patternknot_render.png"  # Default
     content = parse(fn)
     for i, j in enumerate(content):
         if i == 0:
@@ -279,40 +327,48 @@ if __name__ == "__main__":
             bitdepth = j
         elif i == 5:
             colourful = j
+
     if func:
         i = 0
-        a1 = []
+        line_1 = []
         for b in range(height):
-            a2 = []
+            line_2 = []
             for a in range(width):
-                a2.append(func(i))
+                line_2.append(func(i))
                 i += 1
-            a1.append(a2)
+            line_1.append(line_2)
             i += 1
+
     image = []
-    real_limit = 2**bitdepth
-    for row in a1:
-        # ~ b2 = ''
-        b2 = []
+    real_limit = 2 ** bitdepth
+    for row in line_1:
+        row_2 = []
         for pixel in row:
-            # ~ b2 += hex(pixel % real_limit)[2:].zfill(real_limit // 16)
-            # ~ b2.append(pixel % 256)
-            b2.append(pixel % real_limit)
-        image.append(b2)
-    import endpix
+            # Solution 1: b2 += hex(pixel % real_limit)[2:].zfill(real_limit // 16)
+            # Solution 2: b2.append(pixel % 256)
+            b2.append(pixel % real_limit)  # Solution 3
+        image.append(row_2)
 
     if upscale > 1:
-        image = endpix.upscale(image, upscale, True, not colourful)
+        greyscale = not colorful
+        image = endpix.upscale(
+            image,
+            greyscale=greyscale,
+            upscale=upscale,
+            stored_ints=True
+        )
     rw = width * upscale
     rh = height * upscale
+    greyscale = not colorful
     endpix.plot(
         image,
         stored_ints=True,
         bitdepth=bitdepth,
-        greyscale=not colourful,
+        greyscale=greyscale,
         width=rw,
         height=rh,
         filename=output_file,
     )
-    outsize = os.path.getsize(output_file)
-    print("Output file size:", outsize, "B")
+
+    out_size = os.path.getsize(output_file)
+    print("Output file size:", out_size, "B")
